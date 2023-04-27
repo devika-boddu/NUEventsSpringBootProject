@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import com.webtools.finalProject.Pojo.NuEvents;
 import com.webtools.finalProject.Pojo.User;
@@ -12,7 +13,7 @@ import com.webtools.finalProject.Pojo.UserProductMap;
 import com.webtools.finalProject.Pojo.UserWishlistMap;
 
 
-
+@Component
 public class UserProductDao extends DAO{
 	public UserProductMap create(UserProductMap userProduct) {
         try {

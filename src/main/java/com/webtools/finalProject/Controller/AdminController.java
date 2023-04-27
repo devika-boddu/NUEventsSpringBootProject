@@ -34,6 +34,8 @@ public class AdminController {
 	
 	List<NuEvents> allPackages = new ArrayList<NuEvents>();
 	
+	@Autowired
+	NuEventsDao eventsDao;
 
 	@GetMapping("/adminLogin.htm")
 	public ModelAndView handleLogin() {
@@ -60,25 +62,23 @@ public class AdminController {
 			NuEvents travelPackage) throws Exception {
 		String selected = request.getParameter("userSelectedOption");
 		if(selected.contains("Create")) {
+			travelPackage.setImage(request.getParameter("imageURL"));
 			travelPackage.setPackageName(request.getParameter("packageName"));
 			travelPackage.setPackageDescription(request.getParameter("packageDescription"));
 			travelPackage.setPackagePrice(Integer.parseInt(request.getParameter("packagePrice")));
-			NuEventsDao travelDao = new NuEventsDao();
-			travelDao.save(travelPackage);
+			eventsDao.save(travelPackage);
 		}else if (selected.contains("Get")) {
 			String pid = request.getParameter("pacakageId");
 			Integer tid = Integer.parseInt(pid);
-			NuEventsDao tdao = new NuEventsDao();
-			NuEvents selectedProduct =tdao.getSelectedProduct(tid);
+			NuEvents selectedProduct =eventsDao.getSelectedProduct(tid);
 			session.setAttribute("tid", tid);
 			session.setAttribute("selectedProduct", selectedProduct);
 			
 		}else if (selected.contains("Delete")) {
 			String pid = request.getParameter("pacakageId");
 			Integer tid = Integer.parseInt(pid);
-			NuEventsDao tdao = new NuEventsDao();
-			NuEvents selectedProduct=tdao.getSelectedProduct(tid);
-			tdao.delete(selectedProduct);
+			NuEvents selectedProduct=eventsDao.getSelectedProduct(tid);
+			eventsDao.delete(selectedProduct);
 		}else if (selected.contains("Update")) {
 			NuEventsDao tdao = new NuEventsDao();
 			Integer packageId = Integer.parseInt(request.getParameter("packId"));
@@ -88,8 +88,7 @@ public class AdminController {
 			String imageURL = request.getParameter("imageURL");
 			tdao.update(packageId,packageName, packageDescription,packagePrice, imageURL);
 		}else if (selected.contains("Show")) {
-			NuEventsDao tdao = new NuEventsDao();
-			allPackages = tdao.getProducts();
+			allPackages = eventsDao.getProducts();
 			session.setAttribute("allPackages", allPackages);
 		}
 		

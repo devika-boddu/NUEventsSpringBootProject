@@ -3,6 +3,7 @@ package com.webtools.finalProject.Controller;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +51,22 @@ public class NuEventsController {
 	int totalCost = 0;
 	int aTotalCost = 0;
 	int optionSelected = 0;
-	NuEventsDao tdao = new NuEventsDao();
-
+	
+	@Autowired
+	UserDao userDao;
+	
+	@Autowired
+	NuEventsDao eventsDao;
+	
+	@Autowired
+	UserProductDao userProdDao;
+	
+	@Autowired
+	UserOrderDao userOrderDao;
+	
+	@Autowired
+	UserWishlistDao userWishlistDao;
+	
 	
 
 	
@@ -70,10 +85,10 @@ public class NuEventsController {
 			String pid = userSelectedOption.substring(12);
 			Integer tid= Integer.parseInt(pid);		
 			
-			NuEvents addTocart=tdao.getSelectedProduct(tid);
+			NuEvents addTocart=eventsDao.getSelectedProduct(tid);
 //			userproduct.setTravelPackages(addTocart);
 //			userproduct.setUser(user);
-			UserProductDao updao = new UserProductDao();
+		
 			User user = (User) session.getAttribute("currentUser");
 			System.out.println("Logged In User for Cart "+ user);
 			System.out.println("Product Added To Cart"+ addTocart);
@@ -93,7 +108,7 @@ public class NuEventsController {
 					}
 				}if(cartCount == 0) {
 					cartList.add(addTocart);
-					UserProductMap upmap = updao.create(new UserProductMap(user, addTocart));
+					UserProductMap upmap = userProdDao.create(new UserProductMap(user, addTocart));
 					request.setAttribute("cartMessage", "Item added ");
 					
 					return "dashboard1";
@@ -107,7 +122,7 @@ public class NuEventsController {
 		
 			}else {
 				cartList.add(addTocart);
-				UserProductMap upmap = updao.create(new UserProductMap(user, addTocart));
+				UserProductMap upmap = userProdDao.create(new UserProductMap(user, addTocart));
 				
 				
 				
@@ -126,9 +141,9 @@ public class NuEventsController {
 				System.out.println(wish.getPackageId());
 			}
 			
-			NuEvents addToWishlist=tdao.getSelectedProduct(tid);
+			NuEvents addToWishlist=eventsDao.getSelectedProduct(tid);
 			
-			UserWishlistDao uwdao = new UserWishlistDao();
+			
 			User user = (User) session.getAttribute("currentUser");
 			System.out.println("Logged In User for Wishlist:"+ user);
 			System.out.println("Product added to wishlist" + addToWishlist);
@@ -148,7 +163,7 @@ public class NuEventsController {
 					}
 				}if(wishCount == 0) {
 					wishList.add(addToWishlist);
-					UserWishlistMap uwmap = uwdao.create(new UserWishlistMap(user, addToWishlist));
+					UserWishlistMap uwmap = userWishlistDao.create(new UserWishlistMap(user, addToWishlist));
 					request.setAttribute("wishlistSuccess", "Item added successfully");
 					return "dashboard1";
 
@@ -160,7 +175,7 @@ public class NuEventsController {
 		
 			}else {
 				wishList.add(addToWishlist);
-				UserWishlistMap uwmap = uwdao.create(new UserWishlistMap(user, addToWishlist));
+				UserWishlistMap uwmap = userWishlistDao.create(new UserWishlistMap(user, addToWishlist));
 				request.setAttribute("wishlistSuccess", "Item added successfully");
 
 			}
@@ -178,7 +193,7 @@ public class NuEventsController {
 			
 				
 				System.out.println("Delete Id: "+tid);
-				NuEvents removeItem = tdao.getSelectedProduct(tid);
+				NuEvents removeItem = eventsDao.getSelectedProduct(tid);
 				for(NuEvents i : wishList) {
 					if(removeItem.getPackageId() == i.getPackageId()) {
 						wishList.remove(wCount);
@@ -198,7 +213,7 @@ public class NuEventsController {
 				cartList = (List<NuEvents>) session.getAttribute("travelPackagesCart");
 				UserProductDao uwdao = new UserProductDao();
 				System.out.println("Delete Id: "+tid);
-				NuEvents removeItem = tdao.getSelectedProduct(tid);
+				NuEvents removeItem = eventsDao.getSelectedProduct(tid);
 				for(NuEvents i : cartList) {
 					if(removeItem.getPackageId() == i.getPackageId()) {
 						cartList.remove(cartCount);
@@ -222,7 +237,7 @@ public class NuEventsController {
 			for(NuEvents order: orderCartList) {
 				ordersList.add(order);
 				//aTotalCost+=order.getPackagePrice();
-				uodao.create(new UserOrderMap(user, tdao.getSelectedProduct(order.getPackageId()),tdao.getSelectedProduct(order.getPackageId()).getPackagePrice()));
+				uodao.create(new UserOrderMap(user, eventsDao.getSelectedProduct(order.getPackageId()),eventsDao.getSelectedProduct(order.getPackageId()).getPackagePrice()));
 			}
 			for(NuEvents order: previousOrderList) {
 				ordersList.add(order);
@@ -236,25 +251,17 @@ public class NuEventsController {
 			session.setAttribute("travelPackagesOrders", ordersList);
 			//System.out.println(aTotalCost);					
 		}
-//		else if(userSelectedOption.contains("View")) {
-//			String pid = userSelectedOption.substring(5);
-//			Integer tid= Integer.parseInt(pid);
-//			System.out.println(tid);
-//			
-//			TravelPackages viewItem = tdao.getSelectedProduct(tid);
-//			session.setAttribute("viewItem", viewItem);
-//			return new ModelAndView("view");
-//	}  
+
 		else if (userSelectedOption.contains("Search")) {
 			String enteredText = request.getParameter("textEntered");
 			System.out.println(enteredText);
-			searchedItems=tdao.getSearchedProducts(enteredText);
+			searchedItems=eventsDao.getSearchedProducts(enteredText);
 			for(NuEvents i : searchedItems) {
 				System.out.println(i.getPackageId());
 			}
 			optionSelected=1;
 		}else if (userSelectedOption.contains("Sort")) {
-			sortedItems=tdao.getSortedProducts();
+			sortedItems=eventsDao.getSortedProducts();
 			optionSelected=2;
 		}
 		else if(userSelectedOption.contains("Total")){
@@ -264,43 +271,17 @@ public class NuEventsController {
 				ordersList.add(order);
 				aTotalCost+=order.getPackagePrice();
 			}
-			System.out.println(aTotalCost);					
-			
-//				totalCost = 0;
-//				String[] selectedValues = request.getParameterValues("qty");
-//				System.out.println(selectedValues);
-//				
-//				for (int i = 0; i < cartItemsList.size(); i++) {
-//				TravelPackages item = cartItemsList.get(i);
-//				totalCost += item.getPackagePrice() * Integer.parseInt(selectedValues[i]);
-//				}
-//				System.out.println(totalCost);
+			System.out.println(aTotalCost);		
+			session.setAttribute("aTotalCost", aTotalCost);
 			}
 
 		else if(userSelectedOption.matches(".*\\d+.*")){
-			System.out.println("Hii");
+			
 			Integer pageNumber = Integer.parseInt(userSelectedOption);
-			paginationResults = tdao.getPaginationResults(pageNumber);
+			paginationResults = eventsDao.getPaginationResults(pageNumber);
 			optionSelected=3;
-//			System.out.println(userSelectedOption);
-//			String pid = userSelectedOption.substring(5);
-//			Integer tid= Integer.parseInt(pid);
-//			System.out.println("tid: "+tid);
-//			
-//			TravelPackages viewItem = tdao.getSelectedProduct(tid);
-//			session.setAttribute("viewItem", viewItem);	
-//			return new ModelAndView("view");
 		}
-//		else if(userSelectedOption.contains("View") && userSelectedOption.matches(".*\\d+.*")) {
-//			System.out.println(userSelectedOption);
-//				String pid = userSelectedOption.substring(5);
-//				Integer tid= Integer.parseInt(pid);
-//				System.out.println("tid: "+tid);
-//				
-//				TravelPackages viewItem = tdao.getSelectedProduct(tid);
-//				session.setAttribute("viewItem", viewItem);	
-//				return "view";
-//		}
+
 		else if(userSelectedOption.contains("Update")) {
 			UserDao userdao = new UserDao();
 			User user = (User) session.getAttribute("currentUser");
@@ -312,7 +293,7 @@ public class NuEventsController {
 		session.setAttribute("sortedItems", sortedItems);
 		session.setAttribute("optionSelected", optionSelected);
 		session.setAttribute("searchedItems", searchedItems);
-		session.setAttribute("aTotalCost", aTotalCost);
+		
 		session.setAttribute("paginationResults", paginationResults);
 		session.setAttribute("updateValue", updateValue);
 		session.setAttribute("totalSelected", totalSelected);
@@ -334,7 +315,7 @@ public class NuEventsController {
 			Integer tid= Integer.parseInt(pid);
 			System.out.println("tid: "+tid);
 			
-			NuEvents viewItem = tdao.getSelectedProduct(tid);
+			NuEvents viewItem = eventsDao.getSelectedProduct(tid);
 			session.setAttribute("viewItem", viewItem);	
 		
 	}

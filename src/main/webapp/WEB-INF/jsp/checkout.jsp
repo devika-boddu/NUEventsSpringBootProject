@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- Display a payment form -->
-<h1> The total amount is: <c:out value="${sessionScope.aTotalCost}" /></h1>
+<h3> The total amount($) is: <c:out value="${sessionScope.aTotalCost}" /></h3>
 <form id="payment-form">
     <div id="link-authentication-element">
         <!--Stripe.js injects the Link Authentication Element-->

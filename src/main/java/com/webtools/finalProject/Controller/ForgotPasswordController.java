@@ -4,6 +4,7 @@ package com.webtools.finalProject.Controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +17,8 @@ import com.webtools.finalProject.Pojo.User;
 @Controller
 public class ForgotPasswordController {
 	
-	
+	@Autowired
+	UserDao userDao;
 	
 	@GetMapping("/forgotPassword.htm")
 	public ModelAndView handleLogin() {
@@ -32,7 +34,7 @@ public class ForgotPasswordController {
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		String cfPassword = request.getParameter("cfpassword");
-		UserDao userDao = new UserDao();
+		
 		User currentUser = userDao.getUser(user.getName());
 		if(currentUser.getName().equals(user.getName())) {
 			if(password.equals(cfPassword)) {
@@ -44,8 +46,7 @@ public class ForgotPasswordController {
 		}else {
 			System.out.println("UserName Not Existed");
 		}
-		//Forgot Password username should be sent to frontend and alert should be sent
-		
+				
 		return new ModelAndView("userLogin");
 		
 	}

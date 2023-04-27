@@ -29,6 +29,9 @@ public class SignupController {
 	@Autowired
 	SignupValidator signupValidator;
 	
+	@Autowired
+	UserDao userDao;
+	
 	
 	@GetMapping("/signup.htm")
 	public ModelAndView handleLogin(ModelMap model, User user) {
@@ -38,7 +41,7 @@ public class SignupController {
 	}
 	
 	@PostMapping("/signUpLogin.htm")
-	public String handleUserSignUp(UserDao userDao,  HttpServletRequest request, HttpServletResponse response, HttpSession session,
+	public String handleUserSignUp(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@ModelAttribute("user") User user, BindingResult result) throws Exception
 	{
 		signupValidator.validate(user, result);

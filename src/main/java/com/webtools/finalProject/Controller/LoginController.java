@@ -40,6 +40,23 @@ public class LoginController {
 	
 	@Autowired
 	LoginValidator loginValidator;
+	
+	@Autowired
+	UserDao userDao;
+	
+	@Autowired
+	NuEventsDao eventsDao;
+	
+	@Autowired
+	UserProductDao userProdDao;
+	
+	@Autowired
+	UserOrderDao userOrderDao;
+	
+	@Autowired
+	UserWishlistDao userWishlistDao;
+	
+	
 	@GetMapping("/login.htm")
 	public ModelAndView handleLogin(ModelMap model, User user) {
 		 model.addAttribute("user", user);
@@ -65,7 +82,6 @@ public class LoginController {
 			return "userLogin";
 		}else {
 		System.out.println("Entered home.htm");
-		UserDao userDao = new UserDao();
 		System.out.println(user.getName());
 		User currentUser = userDao.getUser(user.getName());
 		if(currentUser!=null) {
@@ -83,8 +99,8 @@ public class LoginController {
 						session.setAttribute("userAgent", userAgent);
 						System.out.println("Valid Credentials");
 						
-						NuEventsDao tdao = new NuEventsDao();
-						List<NuEvents> products =tdao.getProducts();
+						
+						List<NuEvents> products =eventsDao.getProducts();
 						List<NuEvents> initialProducts = new ArrayList<>();
 						for(NuEvents i : products) {
 							if(count  < 4) {
@@ -93,28 +109,24 @@ public class LoginController {
 							}
 						}
 						
-						UserProductDao userProdDao = new UserProductDao();
-						UserOrderDao userOrderDao = new UserOrderDao();
-						UserWishlistDao userWishlistDao = new UserWishlistDao();
-						NuEventsDao tpdao = new NuEventsDao();
 						userProducts = userProdDao.getAllUserProducts(currentUser);
 						userOrders = userOrderDao.getAllUserOrders(currentUser);
 						userWishlistItems = userWishlistDao.getAllUserWishlistItems(currentUser);
 						for(UserProductMap i : userProducts) {
 						 System.out.println("userProducts 1: "+ i.getNuEvents().getPackageId());
-						 travelPackagesCart.add(tpdao.getSelectedProduct(i.getNuEvents().getPackageId()));
+						 travelPackagesCart.add(eventsDao.getSelectedProduct(i.getNuEvents().getPackageId()));
 						 System.out.println("travelPackagesCart------"+travelPackagesCart);
 						
 						}
 						for(UserOrderMap i : userOrders) {
 							 System.out.println("userOrders 1: "+ i.getNuEvents().getPackageId());
-							 travelPackagesOrders.add(tpdao.getSelectedProduct(i.getNuEvents().getPackageId()));
+							 travelPackagesOrders.add(eventsDao.getSelectedProduct(i.getNuEvents().getPackageId()));
 							 System.out.println("travelPackagesOrders -----"+travelPackagesOrders);
 							
 						}
 						for(UserWishlistMap i : userWishlistItems) {
 							 System.out.println("userWishlistItems 1: "+ i.getNuEvents().getPackageId());
-							 travelPackagesWishlist.add(tpdao.getSelectedProduct(i.getNuEvents().getPackageId()));
+							 travelPackagesWishlist.add(eventsDao.getSelectedProduct(i.getNuEvents().getPackageId()));
 							 System.out.println("travelPackagesOrders -----"+travelPackagesWishlist);
 							
 						}

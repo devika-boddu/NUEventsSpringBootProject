@@ -1,6 +1,6 @@
 <html>
 <head>
-<title> TRIPIT </title>
+<title> Nu Events </title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -10,12 +10,12 @@
         padding: 0;
     }
     h1 {
-        font-size: 36px;
+        font-size: 24px;
         text-align: center;
         margin-top: 50px;
     }
     p {
-        font-size: 24px;
+        font-size: 20px;
         text-align: center;
         margin-top: 20px;
     }
@@ -37,7 +37,7 @@
 </style>
 </head>
 <body>
-<h1> Welcome to the world of Travel</h1>
+<h1> Welcome to Nu Events!</h1>
 <p>Login/Sigup to Explore more </p>
 <form method = "get" action = "login.htm">
     <button type="submit">Login</button>

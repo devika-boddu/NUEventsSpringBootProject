@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Numart</title>
+    <title>Nu Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
-<style>
+<!-- <style>
 * {box-sizing: border-box}
 body {font-family: "Lato", sans-serif;}
 
@@ -56,14 +56,13 @@ body {font-family: "Lato", sans-serif;}
   width: 80%;
   border-left: none;
   height: 1300px;
-  overflow: hidden;
 }
 .Card-Parent{
     display: flex;
-    flex-wrap: wrap;
+   /* flex-wrap: wrap; */
     margin: 1.5%;
     /* flex-direction: row; */
-    width: 100%;
+    width: 33%;
     padding: 25px;
     justify-content: space-between;
 }
@@ -75,6 +74,15 @@ body {font-family: "Lato", sans-serif;}
 }
 
 .Card {
+    width: 175%;
+    /* flex-basis : 50% */
+    margin: 2%;
+    box-shadow: 0 0 25px #0000004d;
+    /* border-radius: 15px; */
+    list-style: none;
+}
+.Card-Orders-Child {
+    display : flex;
     width: 175%;
     /* flex-basis : 50% */
     margin: 2%;
@@ -102,7 +110,111 @@ body {font-family: "Lato", sans-serif;}
     padding: 1rem 1rem;
     width: 5%;
   }
-</style>
+</style> -->
+
+<style>
+    * {box-sizing: border-box}
+    body {font-family: "Lato", sans-serif;}
+    
+    /* Style the tab */
+    .tab {
+      float: left;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+      width: 20%;
+      height: 1500px;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      display: block;
+      background-color: inherit;
+      color: black;
+      padding: 22px 16px;
+      width: 100%;
+      border: none;
+      outline: none;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    
+    /* Create an active/current "tab button" class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      float: left;
+      padding: 0px 12px;
+      border: 1px solid #ccc;
+      width: 80%;
+      border-left: none;
+      height:1500px;
+      /*overflow: hidden;*/
+    }
+    .Card-Parent{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1.5%;
+        /* flex-direction: row; */
+        width: 100%;
+        padding: 25px;
+        justify-content: space-between;
+    }
+    .Card-Parent > div {
+         flex: 33%; 
+       /* margin: 0.1%; */
+        margin-left: 0.2%;
+        padding: 20px;
+    }
+    
+    .Card {
+        width: 175%;
+        /* flex-basis : 50% */
+        margin: 2%;
+        box-shadow: 0 0 25px #0000004d;
+        /* border-radius: 15px; */
+        list-style: none;
+    }
+    .in{
+            border-top-style: hidden;
+            border-right-style: hidden;
+            border-left-style: hidden;
+            border-bottom-style: hidden;
+            background-color: #ffffff;
+            color: #ffffff;
+          
+    }
+    .in:focus {
+        outline: none;
+      }
+    
+     
+      .cart {
+        padding: 5px;
+        display: inline-block;
+        padding: 1rem 1rem;
+        width: 5%;
+
+      }
+      .Card-Orders-Child {
+        display : flex;
+        width: 175%;
+        /* flex-basis : 50% */
+        margin: 2%;
+        box-shadow: 0 0 25px #0000004d;
+        /* border-radius: 15px; */
+        list-style: none;
+    }
+    </style>
 </head>
 <script>
     function showAlert(message) {
@@ -121,14 +233,15 @@ body {font-family: "Lato", sans-serif;}
         
         <div id="Home" class="tabcontent">
             <h2>Hi
-                <c:out value="${sessionScope.currentUser.name}" />
+                <c:out value="${sessionScope.currentUser.name}" /><br/>
             </h2>
-            <h4>Welcome to Nuemart!</h4>
+            <h4>Welcome to NuEvents!</h4>
+            <img src="https://localist-images.azureedge.net/photos/42783807601800/card@2x/8d1a2879c680d5088777ec75fd22798b820fa22e.jpg" alt="x" width="950" height="700">
         </div>
 
         
     <div id="Products" class="tabcontent">
-        <p>Products Page</p>
+        <!-- <p>Products Page</p> -->
         <form method="post" name="products" action="products.htm">
             <div class="container py-5">
                 <div class="row">
@@ -137,10 +250,10 @@ body {font-family: "Lato", sans-serif;}
                             <label>Search by Package Name: </label>
                             <input type = "text" name = "textEntered"/>
                             <input type = "submit" class="btn btn-warning search" value = "Search" name = "userSelectedOption"/>
-                            <input type = "submit" class="btn btn-warning sort" value = "Sort" name = "userSelectedOption"/>
-                            <!-- <input type = "submit" value = "1" name = "userSelectedOption"/>
+                            <input type = "submit" class="btn btn-warning sort" value = "Sort" name = "userSelectedOption"/> <br/>
+                            <input type = "submit" value = "1" name = "userSelectedOption"/>
                             <input type = "submit" value = "2" name = "userSelectedOption"/>
-                            <input type = "submit" value = "3" name = "userSelectedOption"/> -->
+                            <input type = "submit" value = "3" name = "userSelectedOption"/>
                             <div class = "Card-Parent searchedItems">
                                 <!-- <h3>Hi</h3>
                                 <c:out value="${sessionScope.optionSelected}" /> -->
@@ -149,7 +262,7 @@ body {font-family: "Lato", sans-serif;}
                                     <c:forEach var="attribute" items="${sessionScope.searchedItems}">
                                         <div class="Card">
 
-                                            <img src="${attribute.image}" alt="x" width="250" height="175">
+                                            <img src="${attribute.image}" alt="x" width="450" height="300">
                                             <li>${attribute.packageId}</li>
                                             <li>${attribute.packageName}</li>
                                             <li>${attribute.packagePrice}</li>
@@ -206,7 +319,7 @@ body {font-family: "Lato", sans-serif;}
                                 <c:if test="${optionSelected == '2'}"> 
                                     <c:forEach var="attribute" items="${sessionScope.sortedItems}">
                                      <div class="Card">
-                                        <img src="${attribute.image}" alt="x" width="300" height="250">
+                                        <img src="${attribute.image}" alt="x" width="450" height="300">
                                         <li>${attribute.packageId}</li>
                                         <li>${attribute.packageName}</li>
                                         <li>${attribute.packagePrice}</li>
@@ -254,14 +367,14 @@ body {font-family: "Lato", sans-serif;}
                             </div>
                         </form>
                     </div>
-                    <div>
+                    <!-- <div>
                         <form method = "post" action = "products.htm">
                             <label>Page Numbers</label>
                             <input type = "submit" value = "1" name = "userSelectedOption"/>
                             <input type = "submit" value = "2" name = "userSelectedOption"/>
                             <input type = "submit" value = "3" name = "userSelectedOption"/>
                         </form>
-                    </div>
+                    </div> -->
                         <!-- <thead>
                             <tr>
                                 <th>User Name : </th>
@@ -277,7 +390,7 @@ body {font-family: "Lato", sans-serif;}
                                 <c:if test="${optionSelected == '0' }"> 
                                     <c:forEach var="attribute" items="${sessionScope.initialProducts}">
                                     <div class="Card">
-                                        <img src="${attribute.image}" alt="x" width="300" height="250">
+                                        <img src="${attribute.image}" alt="x" width="450" height="300">
                                         <li>${attribute.packageId}</li>
                                         <li>${attribute.packageName}</li>
                                         <li>${attribute.packagePrice}</li>
@@ -324,7 +437,7 @@ body {font-family: "Lato", sans-serif;}
                                 <c:if test="${optionSelected == '3' }"> 
                                     <c:forEach var="attribute" items="${sessionScope.paginationResults}">
                                     <div class="Card">
-                                        <img src="${attribute.image}" alt="x" width="300" height="250">
+                                        <img src="${attribute.image}" alt="x" width="450" height="300">
                                         <li>${attribute.packageId}</li>
                                         <li>${attribute.packageName}</li>
                                         <li>${attribute.packagePrice}</li>
@@ -384,7 +497,7 @@ body {font-family: "Lato", sans-serif;}
                     <c:forEach var="attribute" items="${sessionScope.travelPackagesCart}">
 
                         <div class="Card" onload="myFunction()">
-                            <img src="${attribute.image}" alt="x" width="300" height="250">
+                            <img src="${attribute.image}" alt="x" width="450" height="300">
                             <li>${attribute.packageId}</li>
                             <li>${attribute.packageName}</li>
                             <li>${attribute.packagePrice}</li>
@@ -461,13 +574,12 @@ body {font-family: "Lato", sans-serif;}
         </c:if>
     </div>
     <div id="Wishlist" class="tabcontent">
-        <p>Wishlist Tab----</p>
         <form method="post" name="viewedAssessmentsForm" action="products.htm">
             <div class="container py-5">
                 <div class = "Card-Parent searchedItems">
                     <c:forEach var="attribute" items="${sessionScope.travelPackagesWishlist}">
                         <div class="Card">
-                            <img src="${attribute.image}" alt="x" width="300" height="250">
+                            <img src="${attribute.image}" alt="x" width="450" height="250">
                             <li>${attribute.packageId}</li>
                             <li>${attribute.packageName}</li>
                             <li>${attribute.packagePrice}</li>
@@ -525,16 +637,19 @@ body {font-family: "Lato", sans-serif;}
         </form>
     </div>
     <div id="Orders" class="tabcontent">
-        <div class="Card-Parent">
+        <div class="Card-Orders">
             <c:forEach var="attribute" items="${sessionScope.travelPackagesOrders}">
 
-                <div class="Card">
-                    <img src="${attribute.image}" alt="x" width="300" height="250">
-                    <li>${attribute.packageId}</li>
-                    <li>${attribute.packageName}</li>
-                    <li>${attribute.packagePrice}</li>
-                    <li>${attribute.packageDescription}</li>
-                    
+                <div class="Card-Orders-Child">
+                    <div>
+                        <img src="${attribute.image}" alt="x" width="100" height="100">
+                    </div>
+                    <div>
+                        <li>${attribute.packageId}</li>
+                        <li>${attribute.packageName}</li>
+                        <li>${attribute.packagePrice}</li>
+                        <li>${attribute.packageDescription}</li>
+                    </div>
                 </div>
             </c:forEach>
         </div>
@@ -553,16 +668,16 @@ body {font-family: "Lato", sans-serif;}
            <hr>
                 <div id="edit">
                     <input type="text" value="${sessionScope.currentUser.name}" name="username"/>
-                    <input type="text" value="${sessionScope.currentUser.email}" name ="email"/>
+                    <input type="text" value="${sessionScope.currentUser.email}" name ="email"/><br/>
                 </div>
-                <input type = "submit" class="btn btn-warning" value ="Update" name = "userSelectedOption"/>
+                <input type = "submit" class="btn btn-warning" value ="Update" name = "userSelectedOption"/><br/><br/>
         
     </form>
 
-        <form method = "post" name = "report" action = "email.htm">
+        <!-- <form method = "post" name = "report" action = "email.htm">
                          <input type = "submit" value ="Email" name = "email"/>
                         <input type = "submit" value ="Report" name = "report"/>    
-        </form>
+        </form> -->
         <form method = "post" name = "report" action = "logout.htm">
             <button type="submit" class="btn btn-warning">Logout</button>
         </form>

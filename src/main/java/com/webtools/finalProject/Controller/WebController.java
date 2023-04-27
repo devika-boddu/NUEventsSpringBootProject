@@ -2,6 +2,8 @@ package com.webtools.finalProject.Controller;
 
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
@@ -20,14 +22,13 @@ public class WebController extends SecurityProperties.Filter {
     
     @GetMapping("/payment")
     public String home(   Model model) throws ServletException, IOException {
-
         model.addAttribute("stripePublicKey",stripePublicKey );
         return "checkout";
     }
 
     @GetMapping("/paymentsuccessful")
-    public String homePage(   Model model) throws ServletException, IOException {
-
+    public String homePage(HttpSession session, Model model) throws ServletException, IOException {
+        session.setAttribute("aTotalCost", 0);
         model.addAttribute("stripePublicKey",stripePublicKey );
         return "payment";
     }

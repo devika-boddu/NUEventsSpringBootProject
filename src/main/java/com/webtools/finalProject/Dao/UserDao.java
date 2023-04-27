@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import com.webtools.finalProject.Exception.UserException;
 import com.webtools.finalProject.Pojo.User;
 
 
-
+@Component
 public class UserDao extends DAO {
 	 
 	public void save(User user) throws Exception {

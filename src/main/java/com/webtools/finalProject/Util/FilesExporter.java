@@ -69,7 +69,7 @@ public class FilesExporter {
 		document.open();
 		Paragraph para = new Paragraph();
 		//TravelPackages order = session.getAttribute("ordersList");
-		List<NuEvents> orderList = (List<NuEvents>) session.getAttribute("travelPackagesOrders");
+		List<NuEvents> orderList = (List<NuEvents>) session.getAttribute("travelPackagesCart");
 		for(NuEvents order : orderList) {
 			para.add("Package Description: "+order.getPackageDescription());
 			para.add("\n");
